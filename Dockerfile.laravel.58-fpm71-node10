@@ -1,0 +1,33 @@
+## Laravel 5.8 requirements
+## https://laravel.com/docs/5.8#server-requirements
+##
+##
+## * BCMath             - arbitrary precision mathematics       - extension
+## * CType              - character type checking               - native
+## * JSON               - javascript object notation            - extension
+## * Mbstring           - multibyte string                      - extension
+## * OpenSSL            - encryption and descryption            - extension
+## * PDO & PDO_MYSQL    - database                              - native
+## * TOKENIZER          - analyzing source                      - native
+## * XML                - libxml: dom soap rpc xml wddx xsl     - extension
+## * GMP                - GNU multiple presicion                - extension
+## * GD                 - Graphics Draw/Image Processing        - extension
+
+ARG PHP_EXTENSION="bcmath mcrypt xls gmp gd"
+FROM thecodingmachine/php:7.1-v2-fpm-node10
+LABEL MAINTEINER="Sergio Flores Genis <seflores@mrgenis.com>"
+
+USER root
+RUN apt-get update || apt-get update
+
+RUN apt-get clean \
+    && apt-get autoremove \
+    && rm -rf /var/lib/apt/list/* /tmp/* /var/tmp/*
+RUN apt-get install -y htop
+
+
+USER docker
+
+RUN composer global require laravel/installer
+
+CMD ["php-fpm"] 
